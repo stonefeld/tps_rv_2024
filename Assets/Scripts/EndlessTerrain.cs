@@ -5,8 +5,8 @@ using UnityEngine;
 public class EndlessTerrain : MonoBehaviour
 {
     const float scale = 1f;
-    const float viewerMoveThresholdForChunckUpdate = 25f;
-    const float sqrViewerMoveThresholdForChunckUpdate = viewerMoveThresholdForChunckUpdate * viewerMoveThresholdForChunckUpdate;
+    const float viewerMoveThresholdForChunkUpdate = 25f;
+    const float sqrViewerMoveThresholdForChunkUpdate = viewerMoveThresholdForChunkUpdate * viewerMoveThresholdForChunkUpdate;
     public LODInfo[] detailLevels;
     public static float maxViewDst;
     public Transform viewer;
@@ -27,12 +27,13 @@ public class EndlessTerrain : MonoBehaviour
         maxViewDst = detailLevels[detailLevels.Length - 1].visibleDistThreshold;
         chunkSize = MapGenerator.mapChunkSize - 1;
         chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
+        UpdateVisibleChunks();
     }
 
     void Update()
     {
-        viewerPosition = new Vector2(viewer.position.x, viewer.position.z) / 2;
-        if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunckUpdate)
+        viewerPosition = new Vector2(viewer.position.x, viewer.position.z) / scale;
+        if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate)
         {
             viewerPositionOld = viewerPosition;
             UpdateVisibleChunks();
@@ -154,7 +155,7 @@ public class EndlessTerrain : MonoBehaviour
                         }
                         else if (!lodMesh.hasRequestedMesh)
                         {
-                            lodMesh.RequetMesh(mapData);
+                            lodMesh.RequestMesh(mapData);
                         }
                     }
                     terrainChunksVisibleLastUpdate.Add(this);
@@ -195,7 +196,7 @@ public class EndlessTerrain : MonoBehaviour
             updateCallback();
         }
 
-        public void RequetMesh(MapData mapData)
+        public void RequestMesh(MapData mapData)
         {
             hasRequestedMesh = true;
             mapGenerator.RequestMeshData(mapData, lod, OnMeshDataReceived);
