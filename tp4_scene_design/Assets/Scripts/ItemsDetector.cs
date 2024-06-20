@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ItemsDetector : MonoBehaviour
 {
     public GameObject crate;
+    public TextMeshPro pointsText;
 
     private Dictionary<string, GameObject> foundCrystals = new Dictionary<string, GameObject>();
 
@@ -12,10 +14,17 @@ public class ItemsDetector : MonoBehaviour
     {
         GameObject o = collider.gameObject;
         if (!foundCrystals.ContainsKey(o.name)) {
-            Debug.Log("Added: " + o.name);
             foundCrystals.Add(o.name, o);
-        } else {
-            Debug.Log("Already in: " + o.name);
+
+            pointsText.text = "";
+            foreach (string crystal in foundCrystals.Keys) {
+                pointsText.text += crystal + ", ";
+            }
+            pointsText.text = pointsText.text.Remove(pointsText.text.Length - 2);
+
+            if (foundCrystals.Count == 10) {
+                pointsText.text += "\nYOU WON!";
+            }
         }
     }
 }
