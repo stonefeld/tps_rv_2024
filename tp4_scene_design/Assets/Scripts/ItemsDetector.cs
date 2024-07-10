@@ -6,6 +6,7 @@ using TMPro;
 public class ItemsDetector : MonoBehaviour
 {
     public GameObject crate;
+    public GameObject palanca;
     public TextMeshPro pointsText;
     public AudioSource introAudioSource;
     public AudioSource primerCristalAudioSource;
@@ -38,6 +39,12 @@ public class ItemsDetector : MonoBehaviour
                     quintoCristalAudioSource.Stop();
                     novenoCristalAudioSource.Play();
                     break;
+
+                case 10:
+                    // TODO: agregar audio
+                    pointsText.text += "\nYOU WON!";
+                    palanca.SetActive(true);
+                    break;
             }
 
 
@@ -46,10 +53,6 @@ public class ItemsDetector : MonoBehaviour
                 pointsText.text += crystal + ", ";
             }
             pointsText.text = pointsText.text.Remove(pointsText.text.Length - 2);
-
-            if (foundCrystals.Count == 10) {
-                pointsText.text += "\nYOU WON!";
-            }
         }
     }
 }
