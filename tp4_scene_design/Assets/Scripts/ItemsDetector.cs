@@ -12,6 +12,7 @@ public class ItemsDetector : MonoBehaviour
     public AudioSource primerCristalAudioSource;
     public AudioSource quintoCristalAudioSource;
     public AudioSource novenoCristalAudioSource;
+    public AudioSource decimoCristalAudioSource;
 
     private Dictionary<string, GameObject> foundCrystals = new Dictionary<string, GameObject>();
 
@@ -41,9 +42,11 @@ public class ItemsDetector : MonoBehaviour
                     break;
 
                 case 10:
-                    // TODO: agregar audio
-                    pointsText.text += "\nYOU WON!";
-                    palanca.SetActive(true);
+                    introAudioSource.Stop();
+                    primerCristalAudioSource.Stop();
+                    quintoCristalAudioSource.Stop();
+                    novenoCristalAudioSource.Stop();
+                    decimoCristalAudioSource.Play();
                     break;
             }
 
@@ -53,6 +56,12 @@ public class ItemsDetector : MonoBehaviour
                 pointsText.text += crystal + ", ";
             }
             pointsText.text = pointsText.text.Remove(pointsText.text.Length - 2);
+
+            if (foundCrystals.Count == 10)
+            {
+                pointsText.text += "\nYOU WON!";
+                palanca.SetActive(true);
+            }
         }
     }
 }
